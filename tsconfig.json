@@ -1,0 +1,21 @@
+{
+  "files": [],
+    "compilerOptions": {
+    "types": ["vite/client"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "pdfjs-dist/build/pdf.worker.min.js": ["node_modules/pdfjs-dist/build/pdf.worker.min.js"]
+    }
+    
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+  
+  
+  
+  
+}
