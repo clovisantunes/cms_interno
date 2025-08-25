@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './styles.module.scss';
 import logo from '../../assets/logo-CMS-site.png';
@@ -22,16 +22,10 @@ import {
   MdAssignment,
   MdFileDownload,
   MdMenuBook,
-  MdAccessTime,
   MdOpenInNew,
   MdExpandMore,
   MdExpandLess,
   MdHome,
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-  MdDescription,
-  MdScience,
-  MdBiotech,
   MdHealthAndSafety
 } from 'react-icons/md';
 import { FaFileMedicalAlt } from "react-icons/fa";
@@ -43,22 +37,12 @@ interface SidebarProps {
 export const Sidebar = ({ onSelectManual }: SidebarProps) => {
   const location = useLocation();
   const isRecRoute = location.pathname === '/rec';
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const isExpanded = true
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [openOperadoras, setOpenOperadoras] = useState(false);
   const [openLaudos, setOpenLaudos] = useState(false);
   const [openManuaisGeral, setOpenManuaisGeral] = useState(false);
   const [openManuaisMedicos, setOpenManuaisMedicos] = useState(false);
-
-  // Atualizar o relógio a cada minuto
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
-    
-    return () => clearInterval(timer);
-  }, []);
 
   const handleItemClick = (file: string | null, label: string) => {
     setActiveItem(label);
@@ -74,11 +58,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
-  };
 
-  // Sistema de ícones categorizados por cores
   const iconColors = {
     primary: '#B62D36', // Vermelho CMS
     secondary: '#4A90E2', // Azul
