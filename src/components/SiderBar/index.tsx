@@ -12,13 +12,11 @@ import manualRec2 from '../../assets/Files/REC/4.pdf';
 import manualRec3 from '../../assets/Files/REC/5.pdf';
 import manualRec4 from '../../assets/Files/REC/6.pdf';
 
-// Ícones premium com variação visual
 import {
   MdLocalHospital,
   MdWork,
   MdBusiness,
   MdWhatsapp,
-  MdPhone,
   MdAssignment,
   MdFileDownload,
   MdMenuBook,
@@ -60,11 +58,11 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
 
 
   const iconColors = {
-    primary: '#B62D36', // Vermelho CMS
-    secondary: '#4A90E2', // Azul
-    tertiary: '#50C878', // Verde
-    accent: '#FF6B35', // Laranja
-    neutral: '#6C757D' // Cinza
+    primary: '#B62D36', 
+    secondary: '#4A90E2', 
+    tertiary: '#50C878',
+    accent: '#FF6B35', 
+    neutral: '#6C757D'
   };
 
   const getIconWithColor = (icon: React.ReactElement, color: keyof typeof iconColors = 'primary') => {
@@ -89,12 +87,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         label: 'WhatsApp',
         icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
         action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
-        extern: true
-      },
-      {
-        label: 'Telefone - Doctoralia',
-        icon: getIconWithColor(<MdPhone />, 'accent'),
-        action: () => handleNavigation('https://phone.doctoralia.com.br/#/?target=/app/home/open', true, 'Telefone - Doctoralia'),
         extern: true
       },
       {
