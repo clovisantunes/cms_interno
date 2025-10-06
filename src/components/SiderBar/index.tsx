@@ -74,7 +74,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
       {
         label: 'Medicina Assistencial',
         icon: getIconWithColor(<MdLocalHospital />, 'primary'),
-        action: () => handleNavigation('https://cms.4up.io/', true, 'Medicina Assistencial'),
+        action: () => handleNavigation('https://cms82.4up.io/', true, 'Medicina Assistencial'),
         extern: true
       },
       {
