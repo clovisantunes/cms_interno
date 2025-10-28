@@ -11,6 +11,7 @@ import manualRec1 from '../../assets/Files/REC/3.pdf';
 import manualRec2 from '../../assets/Files/REC/4.pdf';
 import manualRec3 from '../../assets/Files/REC/5.pdf';
 import manualRec4 from '../../assets/Files/REC/6.pdf';
+import manualRec5 from '../../assets/Files/4.pdf'
 
 import {
   MdLocalHospital,
@@ -191,6 +192,10 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         file: manualRec,
       },
       { 
+       label: 'Emissão de Notas | Mais de um pagamento', 
+       file: manualRec5,
+     },
+      { 
         label: 'Raio X', 
         file: manualRec1,
       },
@@ -216,6 +221,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         label: 'Raio X', 
         file: manualRec4,
       },
+      
     ] as ManualChild[],
   };
 
@@ -234,6 +240,10 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
       { 
         label: 'ONRAD RAIO X INTER', 
         file: manualOnradRaioX,
+      },
+      { 
+        label: 'Emissão de Notas | Mais de um pagamento', 
+        file: manualRec5,
       },
     ],
   };
