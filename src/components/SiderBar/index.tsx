@@ -252,6 +252,14 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     icon: getIconWithColor(<MdHome />, 'primary'),
     action: () => handleNavigation('/', false, 'Início'),
   };
+ 
+
+ const recItem = {
+    label: 'Recepção',
+    icon: getIconWithColor(<MdHealthAndSafety />, 'tertiary'),
+    action: () => handleNavigation('/rec', false, 'REC'),
+  };
+
   return (
     <div className={`${styles.sidebar} ${isExpanded ? styles.expanded : styles.collapsed}`}>
       <div className={styles.topSection}>
@@ -268,15 +276,24 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
               className={`${styles.menuItem} ${activeItem === 'Início' ? styles.active : ''}`}
               onClick={() => homeItem.action()}
             >
+           
               <div className={styles.menuItemContent}>
                 {homeItem.icon}
                 {isExpanded && <span>{homeItem.label}</span>}
               </div>
             </li>
+            <li
+              className={`${styles.menuItem} ${activeItem === 'REC' ? styles.active : ''}`}
+              onClick={() => recItem.action()}
+            >
+              <div className={styles.menuItemContent}>
+                {recItem.icon}
+                {isExpanded && <span>{recItem.label}</span>}
+              </div>
+            </li>
           </ul>
         </div>
 
-        {/* Seção de Acesso Rápido */}
         <div className={styles.section}>
           {isExpanded && <p className={styles.sectionTitle}>Acesso Rápido</p>}
           <ul className={styles.menu}>

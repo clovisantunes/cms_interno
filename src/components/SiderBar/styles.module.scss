@@ -1,4 +1,4 @@
-// Sidebar.module.scss
+// Sidebar.module.scss - VERSÃO CORRIGIDA
 @import '../../styles/variables';
 
 .sidebar {
@@ -38,6 +38,8 @@
     min-width: 80px;
     align-items: center;
 
+    // CORREÇÃO: Remover as regras que escondem os textos
+    /* REMOVER ESTAS LINhas PROBLEMÁTICAS:
     .menuItem span,
     .clock span,
     .sectionTitle {
@@ -47,6 +49,7 @@
       overflow: hidden;
       pointer-events: none;
     }
+    */
   }
 }
 
@@ -80,30 +83,32 @@
   }
 }
 
-.toggleBtn {
-  background: rgba(182, 45, 54, 0.08);
-  border: none;
-  color: var(--color-primary);
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  flex-shrink: 0;
-
-  &:hover {
-    background: var(--color-primary);
-    color: white;
-    transform: rotate(180deg) scale(1.05);
-    box-shadow: 0 4px 15px rgba(182, 45, 54, 0.3);
+// CORREÇÃO: Esconder textos apenas no modo collapsed de forma correta
+.sidebar.collapsed {
+  .menuItemContent span,
+  .sectionTitle,
+  .clock span,
+  .externalIcon,
+  .submenuItem span {
+    display: none !important;
   }
 
-  svg {
-    font-size: 1.35rem;
+  .menuItemContent {
+    justify-content: center;
+    padding: 1rem 0.5rem;
+    
+    svg {
+      margin-right: 0;
+      font-size: 1.6rem;
+    }
+  }
+
+  .submenu {
+    display: none;
+  }
+
+  .logoImg {
+    width: 50px;
   }
 }
 
@@ -328,6 +333,86 @@
   }
 }
 
+// NOVAS FUNCIONALIDADES - ADICIONAR ESTAS
+
+// Barra de pesquisa
+.searchContainer {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  background: rgba(255, 255, 255, 0.5);
+  
+  .searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(182, 45, 54, 0.1);
+      background: white;
+    }
+    
+    &::placeholder {
+      color: #94a3b8;
+    }
+  }
+}
+
+// Seção de recentes
+.recentItem {
+  position: relative;
+  
+  .timeAgo {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-left: auto;
+    font-weight: 400;
+  }
+}
+
+// Badge de notificação
+.badge {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  margin-left: auto;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+// Status indicators
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: auto;
+  
+  &.online {
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  }
+  
+  &.offline {
+    background: #ef4444;
+  }
+  
+  &.slow {
+    background: #f59e0b;
+  }
+}
+
 // Responsividade
 @media (max-width: 1440px) {
   .sidebar.expanded {
@@ -392,14 +477,4 @@
 // Efeito de brilho suave nos ícones ativos
 .menuItem.active .menuItemContent svg {
   filter: drop-shadow(0 0 8px rgba(182, 45, 54, 0.4));
-}
-
-// Gradiente animado para itens hover
-.menuItem:hover {
-  background: linear-gradient(
-    90deg,
-    rgba(182, 45, 54, 0.1) 0%,
-    rgba(182, 45, 54, 0.05) 50%,
-    rgba(182, 45, 54, 0.02) 100%
-  );
 }
