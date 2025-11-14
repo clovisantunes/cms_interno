@@ -172,6 +172,12 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
         extern: true
       },
+      {
+        label: 'Drive',
+        icon: getIconWithColor(<MdFileDownload />, 'neutral'),
+        action: () => handleNavigation('https://drive.google.com/', true, 'Drive'),
+        extern: true
+      }
     ];
 
   type ManualChild = {
