@@ -33,6 +33,48 @@ interface SidebarProps {
   onSelectManual: (fileUrl: string | null) => void;
 }
 
+// Definir tipos para os itens do menu
+interface MenuItemBase {
+  label: string;
+  icon: React.ReactElement;
+  action?: () => void;
+  extern?: boolean;
+}
+
+interface MenuItemSimple extends MenuItemBase {
+  expandable?: false;
+  expanded?: never;
+  toggle?: never;
+  children?: never;
+}
+
+interface MenuItemExpandable extends MenuItemBase {
+  expandable: true;
+  expanded: boolean;
+  toggle: () => void;
+  children: {
+    label: string;
+    action: () => void;
+  }[];
+}
+
+type MenuItem = MenuItemSimple | MenuItemExpandable;
+
+interface ManualChild {
+  label: string;
+  file?: string;
+  action?: () => void;
+}
+
+interface ManualGroup {
+  label: string;
+  icon: React.ReactElement;
+  expandable: boolean;
+  expanded: boolean;
+  toggle: () => void;
+  children: ManualChild[];
+}
+
 export const Sidebar = ({ onSelectManual }: SidebarProps) => {
   const location = useLocation();
   const isRecRoute = location.pathname === '/rec';
@@ -57,7 +99,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     }
   };
 
-
   const iconColors = {
     primary: '#B62D36', 
     secondary: '#4A90E2', 
@@ -70,123 +111,180 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     return <span style={{ color: iconColors[color] }}>{icon}</span>;
   };
 
-  const quickAccessItems = isRecRoute
-    ? [
-      {
-        label: 'Medicina Assistencial',
-        icon: getIconWithColor(<MdLocalHospital />, 'primary'),
-        action: () => handleNavigation('https://cms.4up.io/', true, 'Medicina Assistencial'),
-        extern: true
-      },
-      {
-        label: 'Medicina do Trabalho',
-        icon: getIconWithColor(<MdWork />, 'secondary'),
-        action: () => handleNavigation('https://centroms.agilework.com.br/Agile.MainApp/', true, 'Medicina do Trabalho'),
-        extern: true
-      },
-      {
-        label: 'WhatsApp',
-        icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
-        action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
-        extern: true
-      },
-      {
-        label: 'Operadoras',
-        icon: getIconWithColor(<MdBusiness />, 'neutral'),
-        expandable: true,
-        expanded: openOperadoras,
-        toggle: () => setOpenOperadoras((prev) => !prev),
-        children: [
-          {
-            label: 'Doctor Clin',
-            action: () => handleNavigation('https://app2.goclin.com/', true, 'Doctor Clin'),
-          },
-          {
-            label: 'CCG',
-            action: () => handleNavigation('https://saviatendimento.com.br/saviatendimento/login.faces', true, 'CCG'),
-          },
-          {
-            label: 'CASSI',
-            action: () => handleNavigation('https://polimed.com.br/autenticadorOrizon/loginAutenticador', true, 'CASSI'),
-          },
-          {
-            label: 'Cabergs',
-            action: () => handleNavigation('https://portal.cabergs.org.br/autenticacao/', true, 'Cabergs'),
-          },
-        ],
-      },
-      {
-        label: 'Laudos',
-        icon: getIconWithColor(<MdAssignment />, 'secondary'),
-        expandable: true,
-        expanded: openLaudos,
-        toggle: () => setOpenLaudos((prev) => !prev),
-        children: [
-          {
-            label: 'Laboratório Pagel',
-            action: () => handleNavigation('https://201.56.72.83:9997/#/login-geral', true, 'Laboratório Pagel'),
-          },
-          {
-            label: 'Eletrocardiograma - Micromed',
-            action: () => handleNavigation('https://coreum.health/classic/autenticacao/codigo-acesso', true, 'Eletrocardiograma - Micromed'),
-          },
-          {
-            label: 'Laudo Pronto',
-            action: () => handleNavigation('https://laudopronto.com.br/', true, 'Laudo Pronto'),
-          },
-          {
-            label: 'Raio X',
-            action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X'),
-          },
-        ],
-      },
-    ]
-    : [
-      {
-        label: 'Medicina Assistencial',
-        icon: getIconWithColor(<MdLocalHospital />, 'primary'),
-        action: () => handleNavigation('https://cms.4up.io/', true, 'Medicina Assistencial'),
-        extern: true
-      },
-      {
-        label: 'Medicina do Trabalho',
-        icon: getIconWithColor(<MdWork />, 'secondary'),
-        action: () => handleNavigation('https://centroms.agilework.com.br/Agile.MainApp/', true, 'Medicina do Trabalho'),
-        extern: true
-      },
-      {
-        label: 'Raio X CMS',
-        icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
-        action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X CMS'),
-        extern: true
-      },
-      {
-        label: 'Raio X Hospital',
-        icon: getIconWithColor(<MdHealthAndSafety />, 'tertiary'),
-        action: () => handleNavigation('https://www.optixone.com.br/dist/home.html', true, 'Raio X Hospital'),
-        extern: true
-      },  
-      {
-        label: 'WhatsApp',
-        icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
-        action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
-        extern: true
-      },
-      {
-        label: 'Drive',
-        icon: getIconWithColor(<MdFileDownload />, 'neutral'),
-        action: () => handleNavigation('https://drive.google.com/', true, 'Drive'),
-        extern: true
-      }
-    ];
+  // ITENS PARA PÁGINA INICIAL
+  const quickAccessItemsHome: MenuItem[] = [
+    {
+      label: 'Medicina Assistencial',
+      icon: getIconWithColor(<MdLocalHospital />, 'primary'),
+      action: () => handleNavigation('https://cms.4up.io/', true, 'Medicina Assistencial'),
+      extern: true
+    },
+    {
+      label: 'Medicina do Trabalho',
+      icon: getIconWithColor(<MdWork />, 'secondary'),
+      action: () => handleNavigation('https://centroms.agilework.com.br/Agile.MainApp/', true, 'Medicina do Trabalho'),
+      extern: true
+    },
+    {
+      label: 'RaioX CMS',
+      icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
+      action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X CMS'),
+      extern: true
+    },
+    {
+      label: 'RaioX CMS - Novo',
+      icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
+      action: () => handleNavigation('https://pacs.centroms.com.br', true, 'Raio X CMS'),
+      extern: true
+    },
+   
+    {
+      label: 'WhatsApp',
+      icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
+      action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
+      extern: true
+    },
+    {
+      label: 'Drive',
+      icon: getIconWithColor(<MdFileDownload />, 'neutral'),
+      action: () => handleNavigation('https://drive.google.com/', true, 'Drive'),
+      extern: true
+    }
+  ];
 
-  type ManualChild = {
-    label: string;
-    file?: string;
-    action?: () => void;
-  };
+  // ITENS PARA PÁGINA RECEPÇÃO
+  const quickAccessItemsRec: MenuItem[] = [
+    {
+      label: 'Medicina Assistencial',
+      icon: getIconWithColor(<MdLocalHospital />, 'primary'),
+      action: () => handleNavigation('https://cms.4up.io/', true, 'Medicina Assistencial'),
+      extern: true
+    },
+    {
+      label: 'Medicina do Trabalho',
+      icon: getIconWithColor(<MdWork />, 'secondary'),
+      action: () => handleNavigation('https://centroms.agilework.com.br/Agile.MainApp/', true, 'Medicina do Trabalho'),
+      extern: true
+    },
+    {
+      label: 'WhatsApp',
+      icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
+      action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
+      extern: true
+    },
+    {
+      label: 'Operadoras',
+      icon: getIconWithColor(<MdBusiness />, 'neutral'),
+      expandable: true,
+      expanded: openOperadoras,
+      toggle: () => setOpenOperadoras((prev) => !prev),
+      children: [
+        {
+          label: 'Doctor Clin',
+          action: () => handleNavigation('https://app2.goclin.com/', true, 'Doctor Clin'),
+        },
+        {
+          label: 'CCG',
+          action: () => handleNavigation('https://saviatendimento.com.br/saviatendimento/login.faces', true, 'CCG'),
+        },
+        {
+          label: 'CASSI',
+          action: () => handleNavigation('https://polimed.com.br/autenticadorOrizon/loginAutenticador', true, 'CASSI'),
+        },
+        {
+          label: 'Cabergs',
+          action: () => handleNavigation('https://portal.cabergs.org.br/autenticacao/', true, 'Cabergs'),
+        },
+      ],
+    },
+    {
+      label: 'Laudos',
+      icon: getIconWithColor(<MdAssignment />, 'secondary'),
+      expandable: true,
+      expanded: openLaudos,
+      toggle: () => setOpenLaudos((prev) => !prev),
+      children: [
+        {
+          label: 'Laboratório Pagel',
+          action: () => handleNavigation('https://201.56.72.83:9997/#/login-geral', true, 'Laboratório Pagel'),
+        },
+        {
+          label: 'Eletrocardiograma - Micromed',
+          action: () => handleNavigation('https://coreum.health/classic/autenticacao/codigo-acesso', true, 'Eletrocardiograma - Micromed'),
+        },
+        {
+          label: 'Laudo Pronto',
+          action: () => handleNavigation('https://laudopronto.com.br/', true, 'Laudo Pronto'),
+        },
+        {
+          label: 'Raio X',
+          action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X'),
+        },
+      ],
+    },
+  ];
 
-  const manualsRecGeral = {
+  // ITENS DE ACESSO EXTERNO (compartilhados entre ambas as páginas)
+  const externalAccessItems: MenuItem[] = [
+    {
+      label: 'Raio X Hospital',
+      icon: getIconWithColor(<MdHealthAndSafety />, 'tertiary'),
+      action: () => handleNavigation('https://www.optixone.com.br/dist/home.html', true, 'Raio X Hospital'),
+      extern: true
+    },
+    {
+      label: 'Operadoras',
+      icon: getIconWithColor(<MdBusiness />, 'neutral'),
+      expandable: true,
+      expanded: openOperadoras,
+      toggle: () => setOpenOperadoras((prev) => !prev),
+      children: [
+        {
+          label: 'Doctor Clin',
+          action: () => handleNavigation('https://app2.goclin.com/', true, 'Doctor Clin'),
+        },
+        {
+          label: 'CCG',
+          action: () => handleNavigation('https://saviatendimento.com.br/saviatendimento/login.faces', true, 'CCG'),
+        },
+        {
+          label: 'CASSI',
+          action: () => handleNavigation('https://polimed.com.br/autenticadorOrizon/loginAutenticador', true, 'CASSI'),
+        },
+        {
+          label: 'Cabergs',
+          action: () => handleNavigation('https://portal.cabergs.org.br/autenticacao/', true, 'Cabergs'),
+        },
+      ],
+    },
+    {
+      label: 'Laudos',
+      icon: getIconWithColor(<MdAssignment />, 'secondary'),
+      expandable: true,
+      expanded: openLaudos,
+      toggle: () => setOpenLaudos((prev) => !prev),
+      children: [
+        {
+          label: 'Laboratório Pagel',
+          action: () => handleNavigation('https://201.56.72.83:9997/#/login-geral', true, 'Laboratório Pagel'),
+        },
+        {
+          label: 'Eletrocardiograma - Micromed',
+          action: () => handleNavigation('https://coreum.health/classic/autenticacao/codigo-acesso', true, 'Eletrocardiograma - Micromed'),
+        },
+        {
+          label: 'Laudo Pronto',
+          action: () => handleNavigation('https://laudopronto.com.br/', true, 'Laudo Pronto'),
+        },
+        {
+          label: 'Raio X',
+          action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X'),
+        },
+      ],
+    },
+  ];
+
+  const manualsRecGeral: ManualGroup = {
     label: 'Manuais Gerais',
     icon: getIconWithColor(<MdFileDownload />, 'primary'),
     expandable: true,
@@ -205,10 +303,10 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         label: 'Raio X', 
         file: manualRec1,
       },
-    ] as ManualChild[],
+    ],
   };
 
-  const manualsRecMedicos = {
+  const manualsRecMedicos: ManualGroup = {
     label: 'Manuais Médicos',
     icon: getIconWithColor(<MdMenuBook />, 'secondary'),
     expandable: true,
@@ -227,8 +325,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         label: 'Raio X', 
         file: manualRec4,
       },
-      
-    ] as ManualChild[],
+    ],
   };
 
   const manualsDefault = {
@@ -253,14 +350,14 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
       },
     ],
   };
-  const homeItem = {
+
+  const homeItem: MenuItemSimple = {
     label: 'Início',
     icon: getIconWithColor(<MdHome />, 'primary'),
     action: () => handleNavigation('/', false, 'Início'),
   };
- 
 
- const recItem = {
+  const recItem: MenuItemSimple = {
     label: 'Recepção',
     icon: getIconWithColor(<MdHealthAndSafety />, 'tertiary'),
     action: () => handleNavigation('/rec', false, 'REC'),
@@ -280,9 +377,8 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
           <ul className={styles.menu}>
             <li 
               className={`${styles.menuItem} ${activeItem === 'Início' ? styles.active : ''}`}
-              onClick={() => homeItem.action()}
+              onClick={() => homeItem.action && homeItem.action()}
             >
-           
               <div className={styles.menuItemContent}>
                 {homeItem.icon}
                 {isExpanded && <span>{homeItem.label}</span>}
@@ -290,7 +386,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
             </li>
             <li
               className={`${styles.menuItem} ${activeItem === 'REC' ? styles.active : ''}`}
-              onClick={() => recItem.action()}
+              onClick={() => recItem.action && recItem.action()}
             >
               <div className={styles.menuItemContent}>
                 {recItem.icon}
@@ -301,9 +397,51 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         </div>
 
         <div className={styles.section}>
-          {isExpanded && <p className={styles.sectionTitle}>Acesso Rápido</p>}
+          {isExpanded && <p className={styles.sectionTitle}>Interno Centro Médico Sapiranga</p>}
           <ul className={styles.menu}>
-            {quickAccessItems.map((item, index) => (
+            {(isRecRoute ? quickAccessItemsRec : quickAccessItemsHome).map((item, index) => (
+              <li 
+                key={item.label} 
+                className={`${styles.menuItem} ${activeItem === item.label ? styles.active : ''}`}
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <div
+                  className={styles.menuItemContent}
+                  onClick={item.expandable ? item.toggle : () => item.action && item.action()}
+                >
+                  {item.icon}
+                  {isExpanded && (
+                    <>
+                      <span>{item.label}</span>
+                      {item.extern && <MdOpenInNew className={styles.externalIcon} />}
+                      {item.expandable && (item.expanded ? <MdExpandLess /> : <MdExpandMore />)}
+                    </>
+                  )}
+                </div>
+                {item.expandable && item.expanded && (
+                  <ul className={styles.submenu}>
+                    {item.children.map((child, childIndex) => (
+                      <li
+                        key={child.label}
+                        className={styles.submenuItem}
+                        onClick={() => child.action()}
+                        style={{ animationDelay: `${childIndex * 0.03}s` }}
+                      >
+                        {isExpanded && <span>{child.label}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Seção de Acessos Externos - Aparece em ambas as páginas */}
+        <div className={styles.section}>
+          {isExpanded && <p className={styles.sectionTitle}>Acessos Externos</p>}
+          <ul className={styles.menu}>
+            {externalAccessItems.map((item, index) => (
               <li 
                 key={item.label} 
                 className={`${styles.menuItem} ${activeItem === item.label ? styles.active : ''}`}
@@ -403,8 +541,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
           </ul>
         </div>
       </div>
-
-      
     </div>
   );
 };
