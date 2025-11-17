@@ -132,7 +132,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
       extern: true
     },
     {
-      label: 'RaioX CMS - Novo',
+      label: 'Exames de Imagem - Animati',
       icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
       action: () => handleNavigation('https://pacs.centroms.com.br', true, 'Raio X CMS'),
       extern: true
@@ -479,7 +479,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
           </ul>
         </div>
 
-        {/* Seção de Manuais */}
         <div className={styles.section}>
           {isExpanded && <p className={styles.sectionTitle}>Documentação</p>}
           <ul className={styles.menu}>
