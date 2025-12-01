@@ -11,7 +11,12 @@ import manualRec1 from '../../assets/Files/REC/3.pdf';
 import manualRec2 from '../../assets/Files/REC/4.pdf';
 import manualRec3 from '../../assets/Files/REC/5.pdf';
 import manualRec4 from '../../assets/Files/REC/6.pdf';
-import manualRec5 from '../../assets/Files/4.pdf'
+import manualRec5 from '../../assets/Files/4.pdf';
+
+
+import preparos1 from '../../assets/Files/preparos/ECOS PREPAROS.pdf'
+import preparos2 from '../../assets/Files/preparos/PREPARO EEG.pdf'
+import preparos3 from '../../assets/Files/preparos/especialidades.pdf'
 
 import {
   MdLocalHospital,
@@ -33,7 +38,6 @@ interface SidebarProps {
   onSelectManual: (fileUrl: string | null) => void;
 }
 
-// Definir tipos para os itens do menu
 interface MenuItemBase {
   label: string;
   icon: React.ReactElement;
@@ -84,6 +88,7 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
   const [openLaudos, setOpenLaudos] = useState(false);
   const [openManuaisGeral, setOpenManuaisGeral] = useState(false);
   const [openManuaisMedicos, setOpenManuaisMedicos] = useState(false);
+const [openPreparos, setOpenPreparos] = useState(false);
 
   const handleItemClick = (file: string | null, label: string) => {
     setActiveItem(label);
@@ -111,7 +116,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     return <span style={{ color: iconColors[color] }}>{icon}</span>;
   };
 
-  // ITENS PARA PÁGINA INICIAL
   const quickAccessItemsHome: MenuItem[] = [
     {
       label: 'Medicina Assistencial',
@@ -152,7 +156,6 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
     }
   ];
 
-  // ITENS PARA PÁGINA RECEPÇÃO
   const quickAccessItemsRec: MenuItem[] = [
     {
       label: 'Medicina Assistencial',
@@ -222,9 +225,29 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
         },
       ],
     },
+    {
+      label: 'Preparos Pacientes',
+      icon: getIconWithColor(<MdHealthAndSafety />, 'accent'), // ou outra cor que preferir
+      expandable: true,
+      expanded: openPreparos,
+      toggle: () => setOpenPreparos((prev) => !prev),
+      children: [
+        {
+          label: 'ECOS PREPAROS',
+          action: () => handleItemClick(preparos1, 'ECOS PREPAROS'),
+        },
+        {
+          label: 'PREPARO EEG',
+          action: () => handleItemClick(preparos2, 'PREPARO EEG'),
+        },
+        {
+          label: 'Especialidades',
+          action: () => handleItemClick(preparos3, 'Especialidades'),
+        },
+      ],
+    },
   ];
 
-  // ITENS DE ACESSO EXTERNO (compartilhados entre ambas as páginas)
   const externalAccessItems: MenuItem[] = [
     {
       label: 'Raio X Hospital',
@@ -281,7 +304,9 @@ export const Sidebar = ({ onSelectManual }: SidebarProps) => {
           action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X'),
         },
       ],
+      
     },
+     
   ];
 
   const manualsRecGeral: ManualGroup = {
