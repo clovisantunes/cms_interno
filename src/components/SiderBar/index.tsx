@@ -227,7 +227,7 @@ const [openPreparos, setOpenPreparos] = useState(false);
     },
     {
       label: 'Preparos Pacientes',
-      icon: getIconWithColor(<MdHealthAndSafety />, 'accent'), // ou outra cor que preferir
+      icon: getIconWithColor(<MdHealthAndSafety />, 'accent'),
       expandable: true,
       expanded: openPreparos,
       toggle: () => setOpenPreparos((prev) => !prev),

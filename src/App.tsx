@@ -2,12 +2,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { Sidebar } from "./components/SiderBar";
 import { PdfViewer } from "./components/PdfViewer";
+import { Alertas } from "./components/Alerts/Alerts";
 import DateTimeLocation from "./components/DataTime";
 import placeholderImage from "./assets/background.jpg";
 import styles from './styles/styles.module.scss';
 
 const Layout = () => {
   const [selectedManual, setSelectedManual] = useState<string | null>(null);
+
+  const showAlertas = !selectedManual;
 
   return (
     <div className={styles.appContainer}>
@@ -37,6 +40,7 @@ const Layout = () => {
                 className={styles.backgroundImage}
               />
               <div className={styles.overlay} />
+              <Alertas isVisible={showAlertas} />
             </div>
           )}
         </div>
