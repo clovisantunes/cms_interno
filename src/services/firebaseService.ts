@@ -6,7 +6,8 @@ import {
   where, 
   orderBy,
   Timestamp,
-  serverTimestamp 
+  serverTimestamp, 
+  getFirestore
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
@@ -71,38 +72,41 @@ export const createAlert = async (
    
  
 
+// services/firebaseService.ts
 export const getActiveAlerts = async (): Promise<AlertData[]> => {
   try {
-    const now = new Date();
-    const q = query(
-      collection(db, 'alerts'),
+    const db = getFirestore();
+    const alertsCollection = collection(db, 'alerts');
+    
+    // Query para buscar alertas ativos com data de expiração futura
+    const queryRef = query(
+      alertsCollection,
       where('isActive', '==', true),
-      where('expiresAt', '>', Timestamp.fromDate(now)),
-      orderBy('expiresAt', 'asc')
+      where('expiresAt', '>', new Date()), // Verifica se ainda não expirou
+      orderBy('expiresAt', 'asc'), // Ordena por data de expiração
+      orderBy('createdAt', 'desc') // Depois por data de criação
     );
     
-    const querySnapshot = await getDocs(q);
-    const alerts: AlertData[] = [];
+    const snapshot = await getDocs(queryRef);
     
-    querySnapshot.forEach((doc) => {
+    return snapshot.docs.map(doc => {
       const data = doc.data();
-      alerts.push({
+      return {
         id: doc.id,
         sections: data.sections || [],
         mainTitle: data.mainTitle || '',
         urgency: data.urgency || 'medium',
         expirationDate: data.expirationDate || null,
-        isActive: data.isActive,
+        isActive: data.isActive || false,
         createdAt: data.createdAt?.toDate() || new Date(),
         expiresAt: data.expiresAt?.toDate() || new Date(),
-        createdBy: data.createdBy || 'Sistema',
-      });
+        createdBy: data.createdBy || '',
+        gratitudeMessage: data.gratitudeMessage || ''
+      };
     });
-    
-    return alerts;
   } catch (error) {
     console.error('Erro ao buscar alertas:', error);
-    return [];
+    throw error;
   }
 };
 

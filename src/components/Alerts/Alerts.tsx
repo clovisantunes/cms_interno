@@ -34,7 +34,6 @@ export const Alertas: React.FC<AlertasProps> = ({ isVisible }) => {
   const [alerts, setAlerts] = useState<AlertData[]>([]);
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,16 +41,13 @@ export const Alertas: React.FC<AlertasProps> = ({ isVisible }) => {
   const fetchAlerts = useCallback(async () => {
     try {
       setIsLoading(true);
-      setError(null);
       const activeAlerts = await getActiveAlerts();
       setAlerts(activeAlerts);
       
-      if (activeAlerts.length === 0) {
-        setError('Nenhum alerta ativo no momento.');
-      }
+      // Se não houver alertas, não setamos erro - simplesmente array vazio
     } catch (error) {
       console.error('Erro ao buscar alertas:', error);
-      setError('Erro ao carregar alertas. Tente novamente.');
+      // Em caso de erro, também não mostramos nada
     } finally {
       setIsLoading(false);
     }
@@ -208,39 +204,19 @@ export const Alertas: React.FC<AlertasProps> = ({ isVisible }) => {
     };
   }, [viewportHeight]);
 
+  // Se não estiver visível, retorna null
   if (!isVisible) return null;
+
+  // Se estiver carregando, retorna null (não mostra loading)
+  if (isLoading) return null;
+
+  // Se não houver alertas, retorna null (não mostra nada)
+  if (alerts.length === 0) return null;
 
   const currentAlert = alerts[currentAlertIndex];
 
-  if (isLoading) {
-    return (
-      <div className={`${styles.alertasWrapper} ${styles.loadingState}`}>
-        <div className={`${styles.alertasContainer} ${styles.loadingContainer}`}>
-          <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>Carregando alertas...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={`${styles.alertasWrapper} ${styles.errorState}`} style={{display: 'none'}}>
-        <div className={`${styles.alertasContainer} ${styles.errorContainer}`}>
-          <span className={styles.errorIcon}>⚠️</span>
-          <p className={styles.errorText}>{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!currentAlert) {
-    return (
-      <div className={`${styles.alertasWrapper} ${styles.emptyState}`} style={{display: 'none'}}>
-        
-      </div>
-    );
-  }
+  // Se o alerta atual for inválido, retorna null
+  if (!currentAlert) return null;
 
   return (
     <div className={styles.alertasWrapper}>
