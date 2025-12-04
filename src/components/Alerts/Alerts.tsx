@@ -225,7 +225,7 @@ export const Alertas: React.FC<AlertasProps> = ({ isVisible }) => {
 
   if (error) {
     return (
-      <div className={`${styles.alertasWrapper} ${styles.errorState}`}>
+      <div className={`${styles.alertasWrapper} ${styles.errorState}`} style={{display: 'none'}}>
         <div className={`${styles.alertasContainer} ${styles.errorContainer}`}>
           <span className={styles.errorIcon}>⚠️</span>
           <p className={styles.errorText}>{error}</p>
