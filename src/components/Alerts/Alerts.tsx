@@ -236,11 +236,8 @@ export const Alertas: React.FC<AlertasProps> = ({ isVisible }) => {
 
   if (!currentAlert) {
     return (
-      <div className={`${styles.alertasWrapper} ${styles.emptyState}`}>
-        <div className={`${styles.alertasContainer} ${styles.emptyContainer}`}>
-          <span className={styles.emptyIcon}>📭</span>
-          <p className={styles.emptyText}>Nenhum alerta disponível no momento.</p>
-        </div>
+      <div className={`${styles.alertasWrapper} ${styles.emptyState}`} style={{display: 'none'}}>
+        
       </div>
     );
   }
