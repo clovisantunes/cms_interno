@@ -170,6 +170,12 @@ const [openPreparos, setOpenPreparos] = useState(false);
       extern: true
     },
     {
+      label: 'Exames de Imagem - Animati',
+      icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
+      action: () => handleNavigation('https://pacs.centroms.com.br', true, 'Raio X CMS'),
+      extern: true
+    },
+    {
       label: 'WhatsApp',
       icon: getIconWithColor(<MdWhatsapp />, 'tertiary'),
       action: () => handleNavigation('https://centroms.sz.chat/static/signin?action=session_expired', true, 'WhatsApp'),
