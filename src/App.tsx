@@ -72,7 +72,7 @@ const App = () => {
               <CreateAlert />
             </ProtectedRoute>
           } />
-          
+           
           <Route path="*" element={
           <ProtectedRoute>
               <Layout />

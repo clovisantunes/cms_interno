@@ -5,6 +5,7 @@ import { AlertSectionEditor } from '../../components/AlertSection/AlertSectionEd
 import styles from './styles.module.scss';
 import { app } from '../../firebase/config';
 import { getAuth } from 'firebase/auth';
+import CompactAlertManagement from '../../components/AlertManagement';
 const CreateAlert: React.FC = () => {
   const navigate = useNavigate();
   
@@ -13,6 +14,8 @@ const CreateAlert: React.FC = () => {
   const [expirationDate, setExpirationDate] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [gratitudeMessage, setGratitudeMessage] = useState('Obrigado pela atenção e colaboração de todos.');
+  const auth = getAuth(app);
+const user = auth.currentUser;
   
   const FIXED_COLORS = {
     WARNING_BG: '#fff3e0',
@@ -80,7 +83,6 @@ const CreateAlert: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Função para obter cor de fundo fixa baseada no tipo
   const getFixedBackgroundColor = (type: string) => {
     switch (type) {
       case 'warning': return FIXED_COLORS.WARNING_BG;
@@ -569,81 +571,8 @@ const CreateAlert: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className={styles.sidebar}>
-          <div className={styles.sidebarCard}>
-            <div className={styles.sidebarHeader}>
-              <h3>🎨 Cores Fixas</h3>
-            </div>
-            <div className={styles.colorGuide}>
-              <div className={styles.colorItem}>
-                <div className={styles.colorBox} style={{ backgroundColor: FIXED_COLORS.WARNING_BG }}></div>
-                <div className={styles.colorInfo}>
-                  <strong>Aviso</strong>
-                  <small>Fundo amarelo claro</small>
-                </div>
-              </div>
-              <div className={styles.colorItem}>
-                <div className={styles.colorBox} style={{ backgroundColor: FIXED_COLORS.PROCEDURE_BG }}></div>
-                <div className={styles.colorInfo}>
-                  <strong>Procedimento</strong>
-                  <small>Fundo verde claro</small>
-                </div>
-              </div>
-              <div className={styles.colorItem}>
-                <div className={styles.colorBox} style={{ backgroundColor: FIXED_COLORS.URGENT_BG }}></div>
-                <div className={styles.colorInfo}>
-                  <strong>Urgente</strong>
-                  <small>Fundo vermelho claro</small>
-                </div>
-              </div>
-              <div className={styles.colorItem}>
-                <div className={styles.colorBox} style={{ backgroundColor: FIXED_COLORS.WHITE_BG, border: '1px solid #e2e8f0' }}></div>
-                <div className={styles.colorInfo}>
-                  <strong>Observação</strong>
-                  <small>Fundo branco</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.sidebarCard}>
-            <div className={styles.sidebarHeader}>
-              <h3>🎯 Níveis de Urgência</h3>
-            </div>
-            <div className={styles.urgencyLevels}>
-              <div className={styles.urgencyLevel} data-level="critical">
-                <div className={styles.urgencyIndicator}></div>
-                <div className={styles.urgencyInfo}>
-                  <strong>🔴 Crítica</strong>
-                  <p>Exige ação imediata</p>
-                </div>
-              </div>
-              <div className={styles.urgencyLevel} data-level="high">
-                <div className={styles.urgencyIndicator}></div>
-                <div className={styles.urgencyInfo}>
-                  <strong>🟠 Alta</strong>
-                  <p>Ação necessária hoje</p>
-                </div>
-              </div>
-              <div className={styles.urgencyLevel} data-level="medium">
-                <div className={styles.urgencyIndicator}></div>
-                <div className={styles.urgencyInfo}>
-                  <strong>🟡 Média</strong>
-                  <p>Atenção necessária</p>
-                </div>
-              </div>
-              <div className={styles.urgencyLevel} data-level="low">
-                <div className={styles.urgencyIndicator}></div>
-                <div className={styles.urgencyInfo}>
-                  <strong>🟢 Baixa</strong>
-                  <p>Para informação geral</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
+      <CompactAlertManagement currentUser={user} />
     </div>
   );
 };

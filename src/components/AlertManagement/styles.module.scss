@@ -1,0 +1,338 @@
+.compactAlertManagement {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 24px;
+  max-height: 600px;
+  overflow-y: auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+
+    .headerLeft {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+
+      .badge {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+
+    .headerRight {
+      .refreshButton {
+        background: none;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:hover:not(:disabled) {
+          background: #f5f5f5;
+          border-color: #1976d2;
+          color: #1976d2;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .errorMessage, .successMessage {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .errorMessage {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+
+  .successMessage {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .searchContainer {
+    position: relative;
+    margin-bottom: 16px;
+
+    .searchInput {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+      }
+    }
+
+    .searchIcon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #757575;
+      font-size: 14px;
+    }
+  }
+
+  .loadingContainer {
+    text-align: center;
+    padding: 40px 0;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f0f0f0;
+      border-top-color: #1976d2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    p {
+      color: #757575;
+      font-size: 14px;
+    }
+  }
+
+  .emptyState {
+    text-align: center;
+    padding: 30px 0;
+    color: #757575;
+
+    .clearSearchButton {
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #e0e0e0;
+      }
+    }
+  }
+
+  .alertsList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .alertItem {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 12px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #f5f5f5;
+      border-color: #e0e0e0;
+    }
+
+    &.inactive {
+      opacity: 0.7;
+      background: #f0f0f0;
+    }
+
+    .alertInfo {
+      margin-bottom: 8px;
+
+      .alertTitle {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 6px;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .alertMeta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        .criticalBadge, .highBadge, .mediumBadge, .lowBadge {
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 600;
+        }
+
+        .criticalBadge {
+          background: #ffebee;
+          color: #c62828;
+        }
+
+        .highBadge {
+          background: #fff3e0;
+          color: #ef6c00;
+        }
+
+        .mediumBadge {
+          background: #fffde7;
+          color: #f9a825;
+        }
+
+        .lowBadge {
+          background: #e8f5e9;
+          color: #2e7d32;
+        }
+
+        .date {
+          font-size: 11px;
+          color: #757575;
+        }
+
+        .inactiveTag {
+          font-size: 11px;
+          color: #757575;
+          background: #e0e0e0;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .alertActions {
+      display: flex;
+      justify-content: flex-end;
+
+      .deleteButton {
+        background: #ffebee;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #ffcdd2;
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .confirmDelete {
+      margin-top: 8px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+
+      p {
+        font-size: 12px;
+        color: #333;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+
+      .confirmButtons {
+        display: flex;
+        gap: 8px;
+
+        button {
+          flex: 1;
+          padding: 4px 8px;
+          border: none;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          &.cancelButton {
+            background: #e0e0e0;
+            color: #333;
+
+            &:hover {
+              background: #bdbdbd;
+            }
+          }
+
+          &.confirmDeleteButton {
+            background: #c62828;
+            color: white;
+
+            &:hover {
+              background: #b71c1c;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .showMoreContainer {
+    text-align: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+
+    .showMoreButton {
+      background: none;
+      border: none;
+      color: #1976d2;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #e3f2fd;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -7,7 +7,9 @@ import {
   orderBy,
   Timestamp,
   serverTimestamp, 
-  getFirestore
+  getFirestore,
+  deleteDoc,
+  doc
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
@@ -72,19 +74,16 @@ export const createAlert = async (
    
  
 
-// services/firebaseService.ts
 export const getActiveAlerts = async (): Promise<AlertData[]> => {
   try {
     const db = getFirestore();
     const alertsCollection = collection(db, 'alerts');
-    
-    // Query para buscar alertas ativos com data de expiração futura
     const queryRef = query(
       alertsCollection,
       where('isActive', '==', true),
-      where('expiresAt', '>', new Date()), // Verifica se ainda não expirou
-      orderBy('expiresAt', 'asc'), // Ordena por data de expiração
-      orderBy('createdAt', 'desc') // Depois por data de criação
+      where('expiresAt', '>', new Date()), 
+      orderBy('expiresAt', 'asc'),
+      orderBy('createdAt', 'desc') 
     );
     
     const snapshot = await getDocs(queryRef);
@@ -110,13 +109,7 @@ export const getActiveAlerts = async (): Promise<AlertData[]> => {
   }
 };
 
-export const deleteAlert = async (alertId: string) => {
-  try {
-    console.log(`Alerta com ID ${alertId} deletado.`);
-  } catch (error) {
-    console.error('Erro ao deletar alerta:', error);
-  }
-};
+
 
 export const parseAlertContent = (content: string): string => {
   return content
@@ -175,4 +168,30 @@ export const createDefaultSection = (type: AlertSection['type']): AlertSection =
     icon: defaultData.icon,
     bulletColor: (defaultData as any).bulletColor,
   };
+};
+
+export const getAlerts = async (userId: string) => {
+  try {
+    const alertsRef = collection(db, 'alerts');
+    const q = query(alertsRef, where('createdBy', '==', userId));
+    const querySnapshot = await getDocs(q);
+    
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      data: doc.data()
+    }));
+  } catch (error) {
+    console.error('Erro ao buscar alertas:', error);
+    throw error;
+  }
+};
+
+export const deleteAlert = async ( alertId: string) => {
+  try {
+    const alertDoc = doc(db, 'alerts', alertId);
+    await deleteDoc(alertDoc);
+  } catch (error) {
+    console.error('Erro ao excluir alerta:', error);
+    throw error;
+  }
 };
