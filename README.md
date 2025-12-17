@@ -19,7 +19,6 @@ O sistema também conta com um **relógio em tempo real**, exibição da **data 
 - 🟦 **TypeScript** — Tipagem estática e maior segurança no desenvolvimento.
 - 🧭 **React Router DOM** — Navegação entre rotas internas.
 - 🎨 **SASS / CSS Modules** — Estilização customizada e responsiva.
-- 🧠 **ChatVolt Bot (IA)** — Integração com chatbot inteligente para suporte interno.
 - 🌍 **Moment.js / Day.js** — Manipulação e exibição de data e hora.
 - 📱 **React Icons** — Ícones padronizados e intuitivos.
 - 🔗 **APIs externas** — Links rápidos para ferramentas corporativas e WhatsApp.
