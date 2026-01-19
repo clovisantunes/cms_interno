@@ -5,7 +5,6 @@ import logo from '../../assets/logo-CMS-site.png';
 
 import manualAtendimento from '../../assets/Files/1.pdf';
 import manualParaAtendimentoPCMSO from '../../assets/Files/2.pdf';
-import manualOnradRaioX from '../../assets/Files/3.pdf';
 import manualRec from '../../assets/Files/REC/1.pdf';
 import manualRec1 from '../../assets/Files/REC/3.pdf';
 import manualRec2 from '../../assets/Files/REC/4.pdf';
@@ -127,12 +126,6 @@ const [openPreparos, setOpenPreparos] = useState(false);
       label: 'Medicina do Trabalho',
       icon: getIconWithColor(<MdWork />, 'secondary'),
       action: () => handleNavigation('https://centroms.agilework.com.br/Agile.MainApp/', true, 'Medicina do Trabalho'),
-      extern: true
-    },
-    {
-      label: 'RaioX CMS',
-      icon: getIconWithColor(<FaFileMedicalAlt />, 'accent'),
-      action: () => handleNavigation('https://icrx.onrad.com.br/', true, 'Raio X CMS'),
       extern: true
     },
     {
@@ -371,10 +364,7 @@ const [openPreparos, setOpenPreparos] = useState(false);
         label: 'Atendimento PCMSO', 
         file: manualParaAtendimentoPCMSO,
       },
-      { 
-        label: 'ONRAD RAIO X INTER', 
-        file: manualOnradRaioX,
-      },
+    
       { 
         label: 'Emissão de Notas | Mais de um pagamento', 
         file: manualRec5,
