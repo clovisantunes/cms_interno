@@ -11,7 +11,7 @@ import manualRec2 from '../../assets/Files/REC/4.pdf';
 import manualRec3 from '../../assets/Files/REC/5.pdf';
 import manualRec4 from '../../assets/Files/REC/6.pdf';
 import manualRec5 from '../../assets/Files/4.pdf';
-
+import manualChamador from '../../assets/Files/REC/Início de Turno.pdf'
 
 import preparos1 from '../../assets/Files/preparos/ECOS PREPAROS.pdf'
 import preparos2 from '../../assets/Files/preparos/PREPARO EEG.pdf'
@@ -327,6 +327,7 @@ const [openPreparos, setOpenPreparos] = useState(false);
         label: 'Raio X', 
         file: manualRec1,
       },
+      
     ],
   };
 
@@ -356,6 +357,10 @@ const [openPreparos, setOpenPreparos] = useState(false);
     label: 'Manuais',
     icon: getIconWithColor(<MdMenuBook />, 'primary'),
     children: [
+       {
+        label: 'Totem e Chamador de Senhas',
+        file: manualChamador,
+      },
       { 
         label: 'Manual de Atendimento', 
         file: manualAtendimento,
@@ -369,6 +374,7 @@ const [openPreparos, setOpenPreparos] = useState(false);
         label: 'Emissão de Notas | Mais de um pagamento', 
         file: manualRec5,
       },
+
     ],
   };
 
